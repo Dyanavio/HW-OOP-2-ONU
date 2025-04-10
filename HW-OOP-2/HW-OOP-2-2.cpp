@@ -56,7 +56,6 @@ int main()
 {
     Solution solution;
 
-    // Create two sorted linked lists: 1 -> 3 -> 5 and 2 -> 4 -> 6
     ListNode* list1 = new ListNode(1);
     list1->next = new ListNode(1);
 
