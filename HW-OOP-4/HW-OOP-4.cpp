@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 #include "color.hpp"
 
 using namespace std;
@@ -76,6 +77,55 @@ void selectionSort(int* art, int n)
 //    }
 //}
 
+template <typename T>
+void insertionSortGeneric(T& art, int n)
+{
+    int swaps = 0;
+    int checks = 0;
+    for (int i = 1; i < n; i++)
+    {
+        int key = art[i];
+        int j = i - 1;
+        while (j >= 0 && art[j] > key)
+        {
+            checks++;
+            swaps++;
+            art[j + 1] = art[j];
+            j = j - 1;
+        }
+        art[j + 1] = key;
+        swaps++;
+    }
+    cout << "Swaps: " << swaps << " | " << "Checks: " << checks << endl;
+}
+
+template <typename T>
+void selectionSortGeneric(T& art, int n)
+{
+    int swaps = 0;
+    int checks = 0;
+    for (int i = 0; i < n - 1; i++)
+    {
+        int minIndex = i;
+        for (int j = i + 1; j < n; j++)
+        {
+            checks++;
+            if (art[j] < art[minIndex])
+            {
+                minIndex = j;
+            }
+        }
+        if (minIndex != i)
+        {
+            swaps++;
+            int temp = art[i];
+            art[i] = art[minIndex];
+            art[minIndex] = temp;
+        }
+    }
+    cout << "Swaps: " << swaps << " | " << "Checks: " << checks << endl;
+}
+
 int main()
 {
     srand(time(NULL));
@@ -126,7 +176,36 @@ int main()
 
     delete[] art;
     art = new int[n];
+    cout << dye::light_blue("\n----- Templates -----") << endl;
     generate(art, n);
+    cout << dye::bright_white("Initial array: ") << endl;
+    output(art, n);
+    insertionSortGeneric(art, n);
+    cout << dye::light_purple("Insertion sorted array through generic: ") << endl;
+    output(art, n);
 
+    cout << dye::bright_white("Initial vector: ") << endl;
+    vector<int> vtr = { 0, 14, 5, 8, 2, 11, 10, 3, 7 ,4 };
+    for (int i = 0; i < vtr.size(); i++)
+    {
+        cout << vtr[i] << " ";
+    }
+    cout << endl;
+    cout << dye::purple("\nInsertion sorted vector through generic: ") << endl;
+    insertionSortGeneric(vtr, vtr.size());
+    for (int i = 0; i < vtr.size(); i++)
+    {
+        cout << vtr[i] << " ";
+    }
+    cout << endl;
+
+    vtr = { 0, 14, 5, 8, 2, 11, 10, 3, 7 ,4 }; // for further sorting purposes
+    cout << dye::aqua("\Selection sorted vector through generic: ") << endl;
+    selectionSortGeneric(vtr, vtr.size());
+    for (int i = 0; i < vtr.size(); i++)
+    {
+        cout << vtr[i] << " ";
+    }
+    cout << endl;
 
 }
