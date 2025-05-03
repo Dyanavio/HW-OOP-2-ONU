@@ -1,8 +1,20 @@
-#include <iostream>
+﻿#include <iostream>
 #include <vector>
+#include <fstream>
 #include "color.hpp"
 
 using namespace std;
+
+struct Data
+{
+    int swaps;
+    int checks;
+    Data(int swaps, int checks)
+    {
+        this->checks = checks;
+        this->swaps = swaps;
+    };
+};
 
 void generate(int* art, int n)
 {
@@ -20,7 +32,7 @@ void output(int* art, int n)
     cout << endl;
 }
 
-void insertionSort(int* art, int n)
+Data insertionSort(int* art, int n)
 {
     int swaps = 0;
     int checks = 0;
@@ -39,9 +51,10 @@ void insertionSort(int* art, int n)
         swaps++;
     }
     cout << "Swaps: " << swaps << " | " << "Checks: " << checks << endl;
+    return Data(swaps, checks);
 }
 
-void selectionSort(int* art, int n)
+Data selectionSort(int* art, int n)
 {
     int swaps = 0;
     int checks = 0;
@@ -65,6 +78,7 @@ void selectionSort(int* art, int n)
         }
     }
     cout << "Swaps: " << swaps << " | " << "Checks: " << checks << endl;
+    return Data(swaps, checks);
 }
 
 //void swap(int* art, int n)
@@ -126,12 +140,31 @@ void selectionSortGeneric(T& art, int n)
     cout << "Swaps: " << swaps << " | " << "Checks: " << checks << endl;
 }
 
+void copy(int* from, int* to, int n)
+{
+    for (int i = 0; i < n; i++)
+    {
+        to[i] = from[i];
+    }
+}
+
 int main()
 {
     srand(time(NULL));
-
+    ofstream file;
+    file.open("index.html");
+    file << "<!DOCTYPE html>\n<html lang = \"en\">\n";
+    file << "<head>\n<meta charset=\"UTF-8\">\n<meta name = \"viewport\" content = \"width=device-width, initial-scale=1.0\">\n<title>Sorting algorithms comparison</title>\n";
+    file << "<style>\n";
+    file << "#collapse {\n border-collapse: collapse;\n border: 3px solid black\n}\n";
+    file << "</style>\n</head>\n";
+    file << "<h1>Antonov - Insertion and Selection Sort</h1>\n";
+    file << "<table id=\"collapse\" border=\"1\">\n";
+    file << "<tr><td>Name of the algorithm</td><td>Length of the array</td><td>Arary type</td><td>Swaps</td><td>Checks</td></tr>\n";
+   
     int n = 10;
     int* art = new int[n];
+    int* art0 = new int[n];
     int* sorted = new int[n] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
     int* reversed = new int[n] {9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
     
@@ -139,40 +172,82 @@ int main()
     cout << dye::green("----- Insertion sort -----") << endl;
     cout << dye::bright_white("Initial array: ") << endl;
     generate(art, n);
+    copy(art, art0, n);
     output(art, n);
 
-    insertionSort(art, n);
+    Data data = insertionSort(art, n);
     cout << dye::bright_white("Sorted array: ") << endl;
     output(art, n);
+
+    file << "<tr><td>Insertion sort</td><td>10</td><td>Random</td><td>" << data.swaps << "</td><td>" << data.checks << "</td></tr>\n";
 
     delete[] art;
     art = new int[n];
+    copy(art0, art, n);
     cout << dye::blue("\n----- Selection sort -----") << endl;
     cout << dye::bright_white("Initial array: ") << endl;
-    generate(art, n);
-    output(art, n);
+    //generate(art, n);
+    output(art0, n);
+    delete[] art0;
 
-    selectionSort(art, n);
+    data = selectionSort(art, n);
     cout << dye::bright_white("Sorted array: ") << endl;
     output(art, n);
+    delete[] art;
+    file << "<tr><td>Selection sort</td><td>10</td><td>Random</td><td>" << data.swaps << "</td><td>" << data.checks << "</td></tr>\n";
 
     cout << dye::yellow("\nInsertion sort on an already sorted array: ") << endl;
-    insertionSort(sorted, n);
+    data = insertionSort(sorted, n);
     output(sorted, n);
+    file << "<tr><td>Insertion sort</td><td>10</td><td>Already sorted</td><td>" << data.swaps << "</td><td>" << data.checks << "</td></tr>\n";
 
     cout << dye::red("\nInsertion sort on a reversed array: ") << endl;
-    insertionSort(reversed, n);
+    data = insertionSort(reversed, n);
     output(reversed, n);
+
+    file << "<tr><td>Insertion sort</td><td>10</td><td>Reversed</td><td>" << data.swaps << "</td><td>" << data.checks << "</td></tr>\n";
     delete[] reversed;
     reversed = new int[n] {9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
 
     cout << dye::light_yellow("\nSelection sort on an already sorted array: ") << endl;
-    selectionSort(sorted, n);
+    data = selectionSort(sorted, n);
     output(sorted, n);
+    delete[] sorted;
+    file << "<tr><td>Selection sort</td><td>10</td><td>Already sorted</td><td>" << data.swaps << "</td><td>" << data.checks << "</td></tr>\n";
 
     cout << dye::light_red("\nSelection sort on a reversed array: ") << endl;
-    selectionSort(reversed, n);
+    data = selectionSort(reversed, n);
     output(reversed, n);
+    file << "<tr><td>Selection sort</td><td>10</td><td>Reversed</td><td>" << data.swaps << "</td><td>" << data.checks << "</td></tr>\n";
+
+    n = 5;
+    art = new int[n];
+    art0 = new int[n];
+    generate(art, n);
+    copy(art, art0, n);
+
+    data = insertionSort(art, n);
+    file << "<tr><td>Insertion sort</td><td>5</td><td>Random</td><td>" << data.swaps << "</td><td>" << data.checks << "</td></tr>\n";
+    data = selectionSort(art0, n);
+    file << "<tr><td>Selection sort</td><td>5</td><td>Random</td><td>" << data.swaps << "</td><td>" << data.checks << "</td></tr>\n";
+
+    data = insertionSort(art, n);
+    file << "<tr><td>Insertion sort</td><td>5</td><td>Already sorted</td><td>" << data.swaps << "</td><td>" << data.checks << "</td></tr>\n";
+    data = selectionSort(art0, n);
+    file << "<tr><td>Selection sort</td><td>5</td><td>Already sorted</td><td>" << data.swaps << "</td><td>" << data.checks << "</td></tr>\n";
+
+    reversed = new int[n] {4, 3, 2, 1, 0};
+    data = insertionSort(reversed, n);
+    file << "<tr><td>Insertion sort</td><td>5</td><td>Reversed</td><td>" << data.swaps << "</td><td>" << data.checks << "</td></tr>\n";
+    delete[] reversed;
+
+    reversed = new int[n] {4, 3, 2, 1, 0};
+    data = selectionSort(reversed, n);
+    file << "<tr><td>Selection sort</td><td>5</td><td>Reversed</td><td>" << data.swaps << "</td><td>" << data.checks << "</td></tr>\n";
+
+    file << "</table>\n<p>If random insertion sort has more swaps than selection sort, but less checks.<br>When the array is already sorted insertion sort has 0 checks and selection sort has 0 swaps.<br>When array is reversed both algorithms have equal number of checks</p>\n</html>";
+
+
 
     delete[] art;
     art = new int[n];

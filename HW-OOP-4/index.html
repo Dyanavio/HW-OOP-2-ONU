@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+<meta charset="UTF-8">
+<meta name = "viewport" content = "width=device-width, initial-scale=1.0">
+<title>Sorting algorithms comparison</title>
+<style>
+#collapse {
+ border-collapse: collapse;
+ border: 3px solid black
+}
+</style>
+</head>
+<h1>Antonov - Insertion and Selection Sort</h1>
+<table id="collapse" border="1">
+<tr><td>Name of the algorithm</td><td>Length of the array</td><td>Arary type</td><td>Swaps</td><td>Checks</td></tr>
+<tr><td>Insertion sort</td><td>10</td><td>Random</td><td>33</td><td>24</td></tr>
+<tr><td>Selection sort</td><td>10</td><td>Random</td><td>7</td><td>45</td></tr>
+<tr><td>Insertion sort</td><td>10</td><td>Already sorted</td><td>9</td><td>0</td></tr>
+<tr><td>Insertion sort</td><td>10</td><td>Reversed</td><td>54</td><td>45</td></tr>
+<tr><td>Selection sort</td><td>10</td><td>Already sorted</td><td>0</td><td>45</td></tr>
+<tr><td>Selection sort</td><td>10</td><td>Reversed</td><td>5</td><td>45</td></tr>
+<tr><td>Insertion sort</td><td>5</td><td>Random</td><td>9</td><td>5</td></tr>
+<tr><td>Selection sort</td><td>5</td><td>Random</td><td>3</td><td>10</td></tr>
+<tr><td>Insertion sort</td><td>5</td><td>Already sorted</td><td>4</td><td>0</td></tr>
+<tr><td>Selection sort</td><td>5</td><td>Already sorted</td><td>0</td><td>10</td></tr>
+<tr><td>Insertion sort</td><td>5</td><td>Reversed</td><td>14</td><td>10</td></tr>
+<tr><td>Selection sort</td><td>5</td><td>Reversed</td><td>2</td><td>10</td></tr>
+</table>
+<p>If random insertion sort has more swaps than selection sort, but less checks.<br>When the array is already sorted insertion sort has 0 checks and selection sort has 0 swaps.<br>When array is reversed both algorithms have equal number of checks</p>
+</html>
